@@ -143,7 +143,8 @@ We can see that the element in this analysis is Households, and that there are 9
 
 
 ```{r clusters}
-length(unique(kenya_2009_df$Primary_sampling_unit)) 
+length(unique(Zambia_HH$Primary_sampling_unit)) 
+length(unique(Zambia_child$Primary_sampling_unit)) 
 # this line of code will return the number of unique observations (i.e number of clusters) within your primary sampling unit variable (remember clusters are our PSU here)
 ```
 
@@ -152,7 +153,18 @@ We can see that there are 398 clusters in this data set.
 3.) How many survey domains are there in this data set? 
 
 ```{r domains}
-length(unique(kenya_2009_df$Sample_domain)) 
+length(unique(Zambia_HH$Sample_domain)) 
+length(unique(Zambia_child$Sample_domain)) 
+
+#How many strata are there in this dataset?
+length(unique(Zambia_HH$Sample_domain)) 
+length(unique(Zambia_child$Sample_stratum_number)) 
+
+
+#How many households are selected in each cluster
+range(Zambia_HH$Number_HH_members)
+
+
 ```
 We can see that there are 8 unique survey domains in this data set
 
@@ -162,7 +174,9 @@ We want to create a table that shows the proportion of households with electrici
 
 ```{r set weight}
 
-kenya_2009_df$pw<- kenya_2009_df$Sample_weight/1000000 #Here we are creating a new variable "pw" in our primary data set that corresponds with the calculated weight
+Zambia_HH$pw<- Zambia_HH$Sample_weight/1000000 
+Zambia_child$pw<- Zambia_child$Sample_weight/1000000 
+#Here we are creating a new variable "pw" in our primary data set that corresponds with the calculated weight
 
 ```
 
@@ -172,29 +186,26 @@ We want to find the proportion of HHs with electricity given some criteria, assu
 
 #1) Urban versus rural settings
 
-res_electricity <- table(kenya_2009_df$HH_res,kenya_2009_df$Has_electricity)
-prop.table(res_electricity,1) # inclusion of 1 here tells R that you want to calculate row proportions
-
 #If we want to calculate the proportions and standard errors individually we can take our main data set and create a subset of samples for Urban versus Rural categorizations
 
 
-Urban.electr <- subset(kenya_2009_df, subset=(HH_res=="Urban"))#creates subset featuring only HHs in urban areas
-attach(Urban.electr)# makes objects in data frames (urban subset) accessible without actually typing the name of the data frame
+Urban.ITN <- subset(Zambia_HH, subset=(HH_residence=="Urban"))#creates subset featuring only HHs in urban areas
+attach(Urban.ITN)# makes objects in data frames (urban subset) accessible without actually typing the name of the data frame
 
-Rural.electr <- subset(kenya_2009_df, subset=(HH_res=="Rural")) #creates subset featuring only HHs in rural areas
-attach(Rural.electr)# make objects in data frames accessible (rural subset) without actually typing the name of the data frame
+Rural.ITN <- subset(Zambia_HH, subset=(HH_residence=="Rural")) #creates subset featuring only HHs in rural areas
+attach(Rural.ITN)# make objects in data frames accessible (rural subset) without actually typing the name of the data frame
 
 #Now we want to calculate the proportion (and standard error) of HHs in urban areas that have electricity:
 
-mean.urban <- mean(Urban.electr$Has_electricity)# Calculates the proportion of people living in urban areas with electricity
+mean.urban <- mean(Urban.ITN$HH_has_ITN)# Calculates the proportion of people living in urban areas with electricity
 mean.urban #prints results
-se.urban <-sqrt(var(Urban.electr$Has_electricity,na.rm=TRUE)/length(na.omit(Urban.electr$Has_electricity)))#calculates standard error
+se.urban <-sqrt(var(Urban.ITN$HH_has_ITN,na.rm=TRUE)/length(na.omit(Urban.ITN$HH_has_ITN)))#calculates standard error
 se.urban# prints results
 
 #And in rural areas
-mean.rural <- mean(Rural.electr$Has_electricity)# Calculates the proportion of people living in urban areas with electricity
+mean.rural <- mean(Rural.ITN$HH_has_ITN)# Calculates the proportion of people living in urban areas with electricity
 mean.rural #prints results
-se.rural <-sqrt(var(Rural.electr$Has_electricity,na.rm=TRUE)/length(na.omit(Rural.electr$Has_electricity)))#calculates standard error
+se.rural <-sqrt(var(Rural.ITN$HH_has_ITN,na.rm=TRUE)/length(na.omit(Rural.ITN$HH_has_ITN)))#calculates standard error
 se.rural# prints results
 ```
 
@@ -202,18 +213,18 @@ se.rural# prints results
 #2) Education level
 
 # Using prop table approach (no standard errors)
-edu_electricity <- table(kenya_2009_df$HH_edu,kenya_2009_df$Has_electricity) 
+edu_electricity <- table(kenya_2009_df$HH_head_education,kenya_2009_df$Has_electricity) 
 prop.table(edu_electricity,1)
 
 #Using subset approach (means and standard errors) for each category/value under the HH_edu variable
-Noedu.electr <- subset(kenya_2009_df, subset=(HH_edu=="No_education"))
-attach(Noedu.electr)
-Primary.electr <- subset(kenya_2009_df, subset=(HH_edu=="Primary"))
-attach(Primary.electr)
-Secondary.electr <- subset(kenya_2009_df, subset=(HH_edu=="Secondary"))
-attach(Secondary.electr)
-Higher.electr <- subset(kenya_2009_df, subset=(HH_edu=="Higher_than"))
-attach(Higher.electr)
+Noedu.ITN <- subset(Zambia_HH, subset=(HH_head_education=="No_education"))
+attach(Noedu.ITN)
+Primary.ITN <- subset(Zambia_HH, subset=(HH_head_education=="Primary"))
+attach(Primary.ITN)
+Secondary.ITN <- subset(Zambia_HH, subset=(HH_head_education=="Secondary"))
+attach(Secondary.ITN)
+Higher.ITN <- subset(Zambia_HH, subset=(HH_head_education=="Higher_than"))
+attach(Higher.ITN)
 
 mean.none <- mean(Noedu.electr$Has_electricity) #No education
 mean.none
