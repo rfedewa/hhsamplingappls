@@ -217,31 +217,44 @@ edu_electricity <- table(kenya_2009_df$HH_head_education,kenya_2009_df$Has_elect
 prop.table(edu_electricity,1)
 
 #Using subset approach (means and standard errors) for each category/value under the HH_edu variable
-Noedu.ITN <- subset(Zambia_HH, subset=(HH_head_education=="No_education"))
+Noedu.ITN <- subset(Zambia_HH, subset=(HH_head_education=="No education"))
 attach(Noedu.ITN)
 Primary.ITN <- subset(Zambia_HH, subset=(HH_head_education=="Primary"))
 attach(Primary.ITN)
 Secondary.ITN <- subset(Zambia_HH, subset=(HH_head_education=="Secondary"))
 attach(Secondary.ITN)
-Higher.ITN <- subset(Zambia_HH, subset=(HH_head_education=="Higher_than"))
+Higher.ITN <- subset(Zambia_HH, subset=(HH_head_education=="Higher than"))
 attach(Higher.ITN)
 
-mean.none <- mean(Noedu.electr$Has_electricity) #No education
+mean.none <- mean(Noedu.ITN$HH_has_ITN) #No education
 mean.none
-se.none <-sqrt(var(Noedu.electr$Has_electricity,na.rm=TRUE)/length(na.omit(Noedu.electr$Has_electricity)))
+se.none <-sqrt(var(Noedu.ITN$HH_has_ITN,na.rm=TRUE)/length(na.omit(Noedu.ITN$HH_has_ITN)))
 se.none
-mean.primary<- mean(Primary.electr$Has_electricity)#Primary
+mean.primary<- mean(Primary.ITN$HH_has_ITN)#Primary
 mean.primary
-se.primary <-sqrt(var(Primary.electr$Has_electricity,na.rm=TRUE)/length(na.omit(Primary.electr$Has_electricity)))
+se.primary <-sqrt(var(Primary.ITN$HH_has_ITN,na.rm=TRUE)/length(na.omit(Primary.ITN$HH_has_ITN)))
 se.primary
-mean.secondary<- mean(Secondary.electr$Has_electricity)#Secondary
+mean.secondary<- mean(Secondary.ITN$HH_has_ITN)#Secondary
 mean.secondary
-se.secondary <-sqrt(var(Secondary.electr$Has_electricity,na.rm=TRUE)/length(na.omit(Secondary.electr$Has_electricity)))
+se.secondary <-sqrt(var(Secondary.ITN$HH_has_ITN,na.rm=TRUE)/length(na.omit(Secondary.ITN$HH_has_ITN)))
 se.secondary
-mean.higher <- mean(Higher.electr$Has_electricity)#Higher than
+mean.higher <- mean(Higher.ITN$HH_has_ITN)#Higher than
 mean.higher
-se.higher <-sqrt(var(Higher.electr$Has_electricity,na.rm=TRUE)/length(na.omit(Higher.electr$Has_electricity)))
+se.higher <-sqrt(var(Higher.ITN$HH_has_ITN,na.rm=TRUE)/length(na.omit(Higher.ITN$HH_has_ITN)))
 se.higher
+
+
+#SES LEVEL
+poorest.ITN <- subset(Zambia_HH, subset=(HH_wealth_index=="Lowest"))
+attach(poorest.ITN)
+poorer.ITN <- subset(Zambia_HH, subset=(HH_wealth_index=="Second"))
+attach(poorer.ITN)
+middle.ITN <- subset(Zambia_HH, subset=(HH_wealth_index=="Middle"))
+attach(middle.ITN)
+richer.ITN <- subset(Zambia_HH, subset=(HH_wealth_index=="Fourth"))
+attach(richer.ITN)
+richest.ITN <- subset(Zambia_HH, subset=(HH_wealth_index=="Highes"))
+attach(richest.ITN)
 ```
 
 ## Step 3: Calculate proportions and standard errors of select indicators assuming SRS with weights
