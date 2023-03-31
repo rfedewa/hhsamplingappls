@@ -255,6 +255,36 @@ richer.ITN <- subset(Zambia_HH, subset=(HH_wealth_index=="Fourth"))
 attach(richer.ITN)
 richest.ITN <- subset(Zambia_HH, subset=(HH_wealth_index=="Highes"))
 attach(richest.ITN)
+
+mean.poorest <- mean(poorest.ITN$HH_has_ITN) #poorest
+mean.poorest
+se.poorest <-sqrt(var(poorest.ITN$HH_has_ITN,na.rm=TRUE)/length(na.omit(poorest.ITN$HH_has_ITN)))
+se.poorest
+mean.poorer<- mean(poorer.ITN$HH_has_ITN)#Poorer
+mean.poorer
+se.poorer <-sqrt(var(poorer.ITN$HH_has_ITN,na.rm=TRUE)/length(na.omit(poorer.ITN$HH_has_ITN)))
+se.poorer
+mean.middle<- mean(middle.ITN$HH_has_ITN)#middle
+mean.middle
+se.middle <-sqrt(var(middle.ITN$HH_has_ITN,na.rm=TRUE)/length(na.omit(middle.ITN$HH_has_ITN)))
+se.middle
+mean.richer <- mean(richer.ITN$HH_has_ITN)#richer
+mean.richer
+se.richer <-sqrt(var(richer.ITN$HH_has_ITN,na.rm=TRUE)/length(na.omit(richer.ITN$HH_has_ITN)))
+se.richer
+mean.richer <- mean(richer.ITN$HH_has_ITN)#richest
+mean.richer
+se.richer <-sqrt(var(richer.ITN$HH_has_ITN,na.rm=TRUE)/length(na.omit(richer.ITN$HH_has_ITN)))
+se.richer
+
+
+#All HH
+mean(Zambia_HH$HH_has_ITN)
+se <-sqrt(var(Zambia_HH$HH_has_ITN,na.rm=TRUE)/length(na.omit(Zambia_HH$HH_has_ITN)))
+se
+
+
+
 ```
 
 ## Step 3: Calculate proportions and standard errors of select indicators assuming SRS with weights
@@ -266,10 +296,10 @@ We now want to calculate weighted  proportions assuming an SRS sampling strategy
 
 #1) Urban versus rural settings (proportions and standard deviations)
 
-electricity_urban_m <- weighted.mean(Urban.electr$Has_electricity, Urban.electr$pw, na.rm=TRUE)
-electricity_urban_m
-electricity_rural_m <- weighted.mean(Rural.electr$Has_electricity, Rural.electr$pw, na.rm=TRUE)
-electricity_rural_m
+ITN_urban_m <- weighted.mean(Urban.ITN$HH_has_ITN, Urban.ITN$pw, na.rm=TRUE)
+ITN_urban_m
+ITN_rural_m <- weighted.mean(Rural.ITN$HH_has_ITN, Rural.ITN$pw, na.rm=TRUE)
+ITN_rural_m
 
 #notice, though how this approach does not return standard errors relative to sampling approach (SRS with weights)
 ```
@@ -278,7 +308,7 @@ To calculate proportions AND standard errors assuming SRS with weights, we can c
 
 ``` {r SRS weight}
 
-DHS_SRS_wtd<-svydesign(ids= ~1, weights=~pw,data=kenya_2009_df, nest=TRUE) #inclusion of ids= ~1 indicates no clustering (remember we are still assuming SRS at this point)
+DHS_SRS_wtd<-svydesign(ids= ~1, weights=~pw,data=Zambia_HH, nest=TRUE) #inclusion of ids= ~1 indicates no clustering (remember we are still assuming SRS at this point)
 
 ```
 
@@ -286,14 +316,23 @@ We can then calculate proportions and weighted standard errors, given some crite
 
 ``` {r SRS wtd prop}
 
-# Has electricity in rural versus urban settings
-Elect.Res.SRS <- svyby(~Has_electricity, ~HH_res, DHS_SRS_wtd, svymean, na.rm=TRUE) #Residence
+# Has ITN in rural versus urban settings
+Elect.Res.SRS <- svyby(~HH_has_ITN, ~HH_residence, DHS_SRS_wtd, svymean, na.rm=TRUE) #Residence
 Elect.Res.SRS
 
-#Has electricity by education level
+#Has ITN by education level
 
-Elect.Edu.SRS<- svyby(~Has_electricity, ~HH_edu, DHS_SRS_wtd, svymean, na.rm=TRUE)
-Elect.Edu.SRS
+ITN.Edu.SRS<- svyby(~HH_has_ITN, ~HH_head_education, DHS_SRS_wtd, svymean, na.rm=TRUE)
+ITN.Edu.SRS
+
+#Has ITN by  SES level
+
+ITN.SES.SRS<- svyby(~HH_has_ITN, ~HH_wealth_index, DHS_SRS_wtd, svymean, na.rm=TRUE)
+ITN.SES.SRS
+
+#Has ITN total
+Total.SRS.wtd <- svymean(~HH_has_ITN,DHS_SRS_wtd)
+Total.SRS.wtd
 ```
 ## Step 4: Calculate proportions and standard errors of select indicators assuming 2-Stage Cluster sampling with weights
 
@@ -301,19 +340,29 @@ We now need to re-specify our survey design to reflect 2-Stage cluster sampling 
 
 ```{r Cluster weights}
 
-DHS_Clstr_wtd<-svydesign(ids= ~Primary_sampling_unit, weights=~pw,data=kenya_2009_df, nest=TRUE)
+DHS_Clstr_wtd<-svydesign(ids= ~Primary_sampling_unit, weights=~pw,data=Zambia_HH, nest=TRUE)
 ```
 
 ``` {r Cluster wtd prop}
 
-# Has electricity in rural versus urban settings
-Elect.Res.Clstr <- svyby(~Has_electricity, ~HH_res, DHS_Clstr_wtd, svymean, na.rm=TRUE) #Residence
-Elect.Res.Clstr
+# Has ITN in rural versus urban settings
+ITN.Res.Clstr <- svyby(~HH_has_ITN, ~HH_residence, DHS_Clstr_wtd, svymean, na.rm=TRUE) #Residence
+ITN.Res.Clstr
 
-#Has electricity by education level
+#Has ITN by education level
 
-Elect.Edu.Clstr<- svyby(~Has_electricity, ~HH_edu, DHS_Clstr_wtd, svymean, na.rm=TRUE)
-Elect.Edu.Clstr
+ITN.Edu.Clstr<- svyby(~HH_has_ITN, ~HH_head_education, DHS_Clstr_wtd, svymean, na.rm=TRUE)
+ITN.Edu.Clstr
+
+#Has ITN by SES level
+
+ITN.SES.Clstr<- svyby(~HH_has_ITN, ~HH_wealth_index, DHS_Clstr_wtd, svymean, na.rm=TRUE)
+ITN.SES.Clstr
+
+#Has ITN total
+Total.SRS.wtd <- svymean(~HH_has_ITN,DHS_Clstr_wtd)
+Total.SRS.wtd
+
 ```
 
 ## Step 5: Calculate proportions and standard errors of select indicators assuming 2-Stage Cluster sampling with weights and stratification
@@ -322,7 +371,7 @@ Here we need to create another function to implement/apply our survey design (2-
 
 ```{r CWS}
 
-DHS_Clstr_strat <-svydesign(ids= ~Primary_sampling_unit, strata= ~Sample_stratum_number, weights=~pw,data=kenya_2009_df, nest=TRUE)
+DHS_Clstr_strat <-svydesign(ids= ~Primary_sampling_unit, strata= ~Sample_stratum_number, weights=~pw,data=Zambia_HH, nest=TRUE)
 
 #note here that we have not specified 2-stage cluster sampling. As multistage sampling has no effect when fpc is not provided (for example with this data set), we do not need to specific 2-stage cluster sampling here when defining our "ids".
 ```
@@ -331,11 +380,20 @@ We can then calculate in a table format our desired proportions and standard err
 
 ```{r CWS props}
 
-Elect.Res.Strat <- svyby(~Has_electricity, ~HH_res, DHS_Clstr_strat, svymean, na.rm=TRUE) #Residence
-Elect.Res.Strat
+ITN.Res.Strat <- svyby(~HH_has_ITN, ~HH_residence, DHS_Clstr_strat, svymean, na.rm=TRUE) #Residence
+ITN.Res.Strat
 
-Elect.Edu.Strat <- svyby(~Has_electricity, ~HH_edu, DHS_Clstr_strat, svymean, na.rm=TRUE) #Education level
-Elect.Edu.Strat
+ITN.Edu.Strat <- svyby(~HH_has_ITN, ~HH_head_education, DHS_Clstr_strat, svymean, na.rm=TRUE) #Education level
+ITN.Edu.Strat
+
+#Has ITN by SES level
+
+ITN.SES.Strat<- svyby(~HH_has_ITN, ~HH_wealth_index, DHS_Clstr_strat, svymean, na.rm=TRUE)
+ITN.SES.Strat
+
+#Has ITN total
+Total.SRS.Strat <- svymean(~HH_has_ITN,DHS_Clstr_wtd)
+Total.SRS.Strat
 ```
 ``` {r Table 3}
 
