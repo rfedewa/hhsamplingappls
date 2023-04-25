@@ -1,0 +1,8 @@
+Homework #3 Feedback:
+
+Preamble:
+- Please re-write the commented out portion of the preamble, where it still says my name and email
+
+Detailed feedback:
+- Line 142 for code for renaming variables in child dataset
+- Line 176: code provided for answering 1c; if you change your answer for this based on the code, I can give you credit for this question
