@@ -25,9 +25,9 @@ The sampling weight will affect the calculation of the point estimate, and the s
 ```{r preamble, warning= FALSE}
 #----------------------------------------------------------------------------#
 #                                                                            #
-# In-Class Assignment script: a R notebook for HH survey data analysis       #
+#.           Household Sampling Apps Spring 2023 Assignment 3.               #
 #                                                                            #
-#    A.J.Young March 7th 2023  ayoung1@tulane.edu                            #
+#                      Riley Fedewa March 31 2023                            #
 #                                                                            #
 #    This script is a demonstration of the basic principles of               #
 #    developing a literate program as well as some basics of conducting      #
@@ -70,7 +70,9 @@ sessionInfo()
 # Import data set in .csv format and create object(data.frame) titled "kenya_2009_df"
 
 #kenya_2009_df <- read_csv(file = "C:\\Users\\ayoung1\\OneDrive\\Documents\\PhD\\TA\\IHSD 7440 HH sampling\\2023\\RStudio Lab\\kenya2009_household_1.csv")
-Zambia_HH <- read.csv(file = "C:\\Users\\FedewaRiley\\Documents\\GitHub\\IHSD_7440_HH_Sampling\\2007_Zambia_HH_2023.csv")
+Zambia_HH <- read_csv(file = "C:\\Users\\rileyfedewa\\Documents\\IHSD_7440_HH_Sampling\\2007_Zambia_HH_2023.csv")
+
+/Users/rileyfedewa/Documents/IHSD_7440_HH_Sampling
 
 Zambia_child <- read.csv(file = "C:\\Users\\FedewaRiley\\Documents\\GitHub\\IHSD_7440_HH_Sampling\\2007_Zambia_Child_2023.csv")
 
