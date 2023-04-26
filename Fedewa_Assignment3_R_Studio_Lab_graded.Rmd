@@ -70,11 +70,11 @@ sessionInfo()
 # Import data set in .csv format and create object(data.frame) titled "kenya_2009_df"
 
 #kenya_2009_df <- read_csv(file = "C:\\Users\\ayoung1\\OneDrive\\Documents\\PhD\\TA\\IHSD 7440 HH sampling\\2023\\RStudio Lab\\kenya2009_household_1.csv")
-Zambia_HH <- read_csv(file = "C:\\Users\\rileyfedewa\\Documents\\IHSD_7440_HH_Sampling\\2007_Zambia_HH_2023.csv")
+Zambia_HH <- read_csv(file = "/Users/rileyfedewa/Documents/IHSD_7440_HH_Sampling/2007_Zambia_HH_2023.csv")
 
-/Users/rileyfedewa/Documents/IHSD_7440_HH_Sampling
 
-Zambia_child <- read.csv(file = "C:\\Users\\FedewaRiley\\Documents\\GitHub\\IHSD_7440_HH_Sampling\\2007_Zambia_Child_2023.csv")
+Zambia_child <- read.csv(file = "/Users/rileyfedewa/Documents/IHSD_7440_HH_Sampling/2007_Zambia_Child_2023.csv")
+
 
 # View data set in new window
 View(Zambia_HH)
@@ -111,6 +111,8 @@ describe(Zambia_child)
 When running the "describe" command, we can see that there 9057 observations in our data set. Our variables are labeled using the DHS notation, but we can re-label them so that we can more easily see what indicator/unit they specifically correspond with, using the definitions provided in lines 65-73
 
 ```{r mames}
+# HOUSEHOLD 
+
 names(Zambia_HH)
 names(Zambia_HH)[names(Zambia_HH) == "HV022"] <- "Sample_stratum_number"
 names(Zambia_HH)[names(Zambia_HH) == "HV023"] <- "Sample_domain"
@@ -131,22 +133,11 @@ names(Zambia_child)[names(Zambia_child) == "V022"] <- "Sample_stratum_number"
 names(Zambia_child)[names(Zambia_child) == "V023"] <- "Sample_domain"
 names(Zambia_child)[names(Zambia_child) == "V002"] <- "Household_number"
 names(Zambia_child)[names(Zambia_child) == "V005"] <- "Sample_weight"
-names(Zambia_child)[names(Zambia_child) == "V009"] <- "Number_HH_members"
-names(Zambia_child)[names(Zambia_child) == "V014"] <- "Number_children_5_under"
 names(Zambia_child)[names(Zambia_child) == "V021"] <- "Primary_sampling_unit"
-names(Zambia_child)[names(Zambia_child) == "V206"] <- "Has_electricity"
 names(Zambia_child)
 
 describe(Zambia_child)
 
-# Take a look at your child dataset and you will see that you only need to rename the following:
-
-names(Zambia_chld_df)[names(Zambia_chld_df) == "V022"] <- "Sample_stratum_number"
-names(Zambia_chld_df)[names(Zambia_chld_df) == "V023"] <- "Sample_domain"
-names(Zambia_chld_df)[names(Zambia_chld_df) == "V002"] <- "Household_number"
-names(Zambia_chld_df)[names(Zambia_chld_df) == "V005"] <- "Sample_weight"
-names(Zambia_chld_df)[names(Zambia_chld_df) == "V021"] <- "Primary_sampling_unit"
-names(Zambia_chld_df)
 ```
 We can see that the element in this analysis is Households, and that there are 9057 observations
 
@@ -176,7 +167,7 @@ length(unique(Zambia_child$Sample_stratum_number))
 range(Zambia_HH$Number_HH_members)
 
 #the code below will return the range of houses in each cluster
-range=as.data.frame(table(Zambia_HH_df$Primary_sampling_unit))
+range=as.data.frame(table(Zambia_HH$Primary_sampling_unit))
 
 diff(range.default(range))
 
